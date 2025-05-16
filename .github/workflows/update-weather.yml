@@ -29,22 +29,38 @@ jobs:
     - name: Fetch weather data
       run: |
         echo "開始獲取天氣數據..."
+        echo "檢查 API 密鑰是否存在..."
+        if [ -z "$OPENWEATHER_API_KEY" ]; then
+          echo "錯誤：API 密鑰未設置"
+          exit 1
+        fi
+        echo "API 密鑰已設置"
+        
         python -c '
         from app import get_weather
         import json
+        import os
+
+        print("Python 腳本開始執行...")
+        print(f"API 密鑰長度: {len(os.getenv("OPENWEATHER_API_KEY"))}")
 
         try:
-            # 調用 get_weather 函數獲取台北天氣
+            print("嘗試獲取台北天氣...")
             result = get_weather("Taipei")
             print("天氣數據獲取成功：")
             print(json.dumps(result.json, indent=2, ensure_ascii=False))
             
-            # 保存結果到文件
+            print("正在保存數據到文件...")
             with open("weather_data.json", "w", encoding="utf-8") as f:
                 json.dump(result.json, f, ensure_ascii=False, indent=2)
+            print("數據保存成功")
                 
         except Exception as e:
-            print(f"錯誤：{str(e)}")
+            print(f"錯誤詳情：{str(e)}")
+            print(f"錯誤類型：{type(e).__name__}")
+            import traceback
+            print("完整錯誤追蹤：")
+            print(traceback.format_exc())
             exit(1)
         '
         echo "檢查生成的文件："
