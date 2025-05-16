@@ -34,5 +34,4 @@ ENV/
 # Environment variables
 .env
 
-# Weather data cache
-weather_data.json 
+ 
