@@ -28,24 +28,24 @@ jobs:
     - name: Fetch weather data
       run: |
         echo "開始獲取天氣數據..."
-        python -c "
-from app import get_weather
-import json
+        python -c '
+        from app import get_weather
+        import json
 
-try:
-    # 調用 get_weather 函數獲取台北天氣
-    result = get_weather('Taipei')
-    print('天氣數據獲取成功：')
-    print(json.dumps(result.json, indent=2, ensure_ascii=False))
-    
-    # 保存結果到文件
-    with open('weather_data.json', 'w', encoding='utf-8') as f:
-        json.dump(result.json, f, ensure_ascii=False, indent=2)
-        
-except Exception as e:
-    print(f'錯誤：{str(e)}')
-    exit(1)
-"
+        try:
+            # 調用 get_weather 函數獲取台北天氣
+            result = get_weather("Taipei")
+            print("天氣數據獲取成功：")
+            print(json.dumps(result.json, indent=2, ensure_ascii=False))
+            
+            # 保存結果到文件
+            with open("weather_data.json", "w", encoding="utf-8") as f:
+                json.dump(result.json, f, ensure_ascii=False, indent=2)
+                
+        except Exception as e:
+            print(f"錯誤：{str(e)}")
+            exit(1)
+        '
         echo "檢查生成的文件："
         ls -l weather_data.json || true
         cat weather_data.json || true
