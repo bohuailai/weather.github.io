@@ -22,8 +22,8 @@
 
 1. 下載專案：
    ```bash
-   git clone https://github.com/bohuailai/weather.git
-   cd weather
+   git clone https://github.com/bohuailai/weather.github.io.git
+   cd weather.github.io
    ```
 
 2. 安裝套件：
