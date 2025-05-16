@@ -29,17 +29,24 @@ jobs:
     - name: Fetch weather data
       env:
         OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
-      run: >
-        echo "開始獲取天氣數據..." &&
-        echo "檢查 API 密鑰是否存在..." &&
+      run: |
+        echo "開始獲取天氣數據..."
+        echo "檢查 API 密鑰是否存在..."
+        echo "API 密鑰長度：${#OPENWEATHER_API_KEY}"
+        
         if [ -z "$OPENWEATHER_API_KEY" ]; then
-          echo "錯誤：API 密鑰未設置" &&
-          exit 1;
-        fi &&
-        echo "API 密鑰已設置" &&
-        python weather_update.py &&
-        echo "檢查生成的文件：" &&
-        ls -l weather_data.json || true &&
+          echo "錯誤：API 密鑰未設置"
+          exit 1
+        fi
+        
+        echo "API 密鑰已設置"
+        echo "Python 版本："
+        python --version
+        echo "執行 Python 腳本..."
+        python weather_update.py
+        
+        echo "檢查生成的文件："
+        ls -l weather_data.json || true
         cat weather_data.json || true
 
     - name: Commit and push changes
