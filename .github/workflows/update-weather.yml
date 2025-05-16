@@ -1,0 +1,66 @@
+name: Update Weather Data
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # 每5分鐘執行一次
+  workflow_dispatch:  # 允許手動觸發
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Fetch weather data
+      run: |
+        echo "開始獲取天氣數據..."
+        # 使用 Python 直接調用 app.py 中的函數
+        python -c "
+from app import get_weather
+import json
+
+try:
+    # 調用 get_weather 函數獲取台北天氣
+    result = get_weather('Taipei')
+    print('天氣數據獲取成功：')
+    print(json.dumps(result.json, indent=2, ensure_ascii=False))
+except Exception as e:
+    print(f'錯誤：{str(e)}')
+    exit(1)
+"
+        echo "檢查生成的文件："
+        ls -l weather_data.json
+        cat weather_data.json
+      env:
+        OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+        
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+        git add weather_data.json
+        
+        # 檢查是否有變更需要提交
+        if git diff --staged --quiet; then
+          echo "沒有新的變更需要提交"
+        else
+          git commit -m "自動更新天氣數據 $(date '+%Y-%m-%d %H:%M:%S')"
+          git push
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

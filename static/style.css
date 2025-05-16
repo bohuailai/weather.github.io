@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', '微軟正黑體', Arial, sans-serif;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #0083b0;
+}
+
+button {
+    padding: 12px 24px;
+    background: #0083b0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #006d93;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.weather-info {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+}
+
+.weather-info h2 {
+    color: #0083b0;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.weather-info .placeholder {
+    color: #666;
+    font-style: italic;
+}
+
+.weather-details {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.temperature {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 1rem 0;
+}
+
+.feels-like {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.description {
+    font-size: 1.4rem;
+    color: #0083b0;
+    margin: 0.5rem 0;
+}
+
+.humidity, .wind {
+    color: #444;
+}
+
+.error {
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba(231, 76, 60, 0.1);
+    margin: 1rem 0;
+}
+
+.last-update {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-style: italic;
+} 

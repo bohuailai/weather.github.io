@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天氣查詢</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>天氣查詢</h1>
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name (e.g., Taipei, Tokyo, London)">
+            <button onclick="getWeather()">查詢</button>
+        </div>
+        <div id="weatherInfo" class="weather-info">
+            <div class="placeholder">
+                Please enter city name in English
+            </div>
+        </div>
+        <div id="lastUpdate" class="last-update"></div>
+    </div>
+
+    <script>
+        let currentCity = '';
+
+        async function getWeather() {
+            const cityInput = document.getElementById('cityInput');
+            const city = cityInput.value.trim();
+            
+            if (!city) {
+                alert('Please enter a city name');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/weather/${encodeURIComponent(city)}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById('weatherInfo').innerHTML = `
+                        <div class="error">${data.error}</div>
+                    `;
+                    document.getElementById('lastUpdate').textContent = '';
+                    return;
+                }
+
+                currentCity = city;
+                document.getElementById('weatherInfo').innerHTML = `
+                    <h2>${data.city}</h2>
+                    <div class="weather-details">
+                        <p class="temperature">${data.temperature}°C</p>
+                        <p class="feels-like">體感溫度：${data.feels_like}°C</p>
+                        <p class="description">${data.description}</p>
+                        <p class="humidity">濕度：${data.humidity}%</p>
+                        <p class="wind">風速：${data.wind_speed} m/s</p>
+                    </div>
+                `;
+                document.getElementById('lastUpdate').textContent = `OpenWeatherMap 數據更新時間：${data.last_update}`;
+            } catch (error) {
+                document.getElementById('weatherInfo').innerHTML = `
+                    <div class="error">發生錯誤：${error.message}</div>
+                `;
+                document.getElementById('lastUpdate').textContent = '';
+            }
+        }
+
+        // 按下 Enter 鍵時觸發查詢
+        document.getElementById('cityInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getWeather();
+            }
+        });
+    </script>
+</body>
+</html> 
