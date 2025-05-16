@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '*/10 * * * *'  # 每10分鐘執行一次
   workflow_dispatch:  # 允許手動觸發
+  push:  # 添加 push 觸發器
 
 jobs:
   update-weather:
