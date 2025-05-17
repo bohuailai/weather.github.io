@@ -13,6 +13,9 @@ permissions:
   checks: write
   pull-requests: write
 
+env:
+  TZ: 'Asia/Taipei'  # 設定時區為台北時間
+
 jobs:
   update-weather:
     runs-on: ubuntu-latest
@@ -70,7 +73,8 @@ jobs:
         if git diff --staged --quiet; then
           echo "沒有新的變更需要提交"
         else
-          git commit -m "自動更新天氣數據 $(date '+%Y-%m-%d %H:%M:%S')"
+          current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
+          git commit -m "自動更新天氣數據 $current_time"
           git push
         fi
       env:
