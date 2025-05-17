@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests python-dotenv
+        pip install -r requirements.txt
         
     - name: Fetch weather data
       env:
@@ -43,17 +43,20 @@ jobs:
         echo "Python 版本："
         python --version
         echo "執行 Python 腳本..."
-        python weather_update.py
+        python fetch_weather.py
         
         echo "檢查生成的文件："
         ls -l weather_data.json || true
         cat weather_data.json || true
 
-    - name: Commit and push changes
+    - name: Configure Git
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        
+
+    - name: Commit and push changes
+      run: |
+        git pull origin main
         git add weather_data.json
         
         # 檢查是否有變更需要提交
