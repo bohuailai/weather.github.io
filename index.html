@@ -20,12 +20,14 @@
     <script>
         async function getWeather() {
             try {
-                const response = await fetch('./weather_data.json');
+                // 使用完整的 GitHub Pages URL
+                const response = await fetch('https://weather.github.io/weather_data.json');
                 if (!response.ok) {
                     throw new Error('無法獲取天氣數據');
                 }
                 
                 const data = await response.json();
+                console.log('Fetched data:', data); // 添加調試日誌
 
                 // 檢查數據是否有效
                 if (!data || !data.city || !data.temperature) {
@@ -45,11 +47,11 @@
 
                 document.getElementById('lastUpdate').textContent = `數據更新時間：${data.last_update}`;
             } catch (error) {
+                console.error('Error details:', error); // 添加詳細錯誤日誌
                 document.getElementById('weatherInfo').innerHTML = `
                     <div class="error">發生錯誤：${error.message}</div>
                 `;
                 document.getElementById('lastUpdate').textContent = '';
-                console.error('Error:', error);
             }
         }
 
