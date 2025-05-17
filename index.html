@@ -9,10 +9,6 @@
 <body>
     <div class="container">
         <h1>天氣查詢</h1>
-        <div class="search-box">
-            <input type="text" id="cityInput" placeholder="Enter city name (e.g., Taipei, Tokyo, London)" value="Taipei" disabled>
-            <button onclick="getWeather()">更新</button>
-        </div>
         <div id="weatherInfo" class="weather-info">
             <div class="placeholder">
                 載入中...
@@ -62,11 +58,8 @@
             }
         }
 
-        // 頁面載入時自動顯示天氣
+        // 頁面載入時顯示天氣
         window.onload = getWeather;
-
-        // 每 60 秒自動更新一次
-        setInterval(getWeather, 60000);
     </script>
 </body>
 </html> 
