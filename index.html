@@ -27,28 +27,23 @@
                 
                 const data = await response.json();
 
-                // 檢查API回應是否包含必要的資料
-                if (!data || !data.name || !data.main || !data.weather) {
+                // 檢查數據是否有效
+                if (!data || !data.city || !data.temperature) {
                     throw new Error('無效的天氣數據格式');
                 }
 
                 document.getElementById('weatherInfo').innerHTML = `
-                    <h2>${data.name}</h2>
+                    <h2>${data.city}</h2>
                     <div class="weather-details">
-                        <p class="temperature">${Math.round(data.main.temp)}°C</p>
-                        <p class="feels-like">體感溫度：${Math.round(data.main.feels_like)}°C</p>
-                        <p class="description">${data.weather[0].description}</p>
-                        <p class="humidity">濕度：${data.main.humidity}%</p>
-                        <p class="wind">風速：${data.wind.speed} m/s</p>
+                        <p class="temperature">${data.temperature}°C</p>
+                        <p class="feels-like">體感溫度：${data.feels_like}°C</p>
+                        <p class="description">${data.description}</p>
+                        <p class="humidity">濕度：${data.humidity}%</p>
+                        <p class="wind">風速：${data.wind_speed} m/s</p>
                     </div>
                 `;
 
-                // 從 updatedAt 或 dt 獲取更新時間
-                const updateTime = data.updatedAt 
-                    ? new Date(data.updatedAt)
-                    : new Date(data.dt * 1000);
-
-                document.getElementById('lastUpdate').textContent = `數據更新時間：${updateTime.toLocaleString('zh-TW')}`;
+                document.getElementById('lastUpdate').textContent = `數據更新時間：${data.last_update}`;
             } catch (error) {
                 document.getElementById('weatherInfo').innerHTML = `
                     <div class="error">發生錯誤：${error.message}</div>
