@@ -74,7 +74,7 @@ jobs:
           echo "沒有新的變更需要提交"
         else
           current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')
-          git commit -m "Last updated at $current_time"
+          git commit -m "Last updated: $current_time"
           git push
         fi
       env:
