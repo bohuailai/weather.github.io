@@ -14,8 +14,8 @@ def fetch_weather():
         raise ValueError("未設置 OPENWEATHER_API_KEY 環境變數")
 
     # 台北市的座標
-    lat = "25.0330"
-    lon = "121.5654"
+    lat = "25.0478"
+    lon = "121.5319"
     
     # API 請求 URL
     url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric&lang=zh_tw"
