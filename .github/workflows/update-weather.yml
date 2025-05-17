@@ -6,6 +6,13 @@ on:
   workflow_dispatch:  # 允許手動觸發
   push:  # 添加 push 觸發器
 
+# 添加權限設定
+permissions:
+  contents: write
+  actions: write
+  checks: write
+  pull-requests: write
+
 jobs:
   update-weather:
     runs-on: ubuntu-latest

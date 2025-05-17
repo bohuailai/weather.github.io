@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>天氣查詢</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
     <div class="container">
@@ -34,7 +34,8 @@
             }
 
             try {
-                const response = await fetch(`/api/weather/${encodeURIComponent(city)}`);
+                // 從 weather_data.json 讀取數據
+                const response = await fetch('weather_data.json');
                 const data = await response.json();
 
                 if (data.error) {
@@ -45,18 +46,18 @@
                     return;
                 }
 
-                currentCity = city;
                 document.getElementById('weatherInfo').innerHTML = `
-                    <h2>${data.city}</h2>
+                    <h2>${data.name}</h2>
                     <div class="weather-details">
-                        <p class="temperature">${data.temperature}°C</p>
-                        <p class="feels-like">體感溫度：${data.feels_like}°C</p>
-                        <p class="description">${data.description}</p>
-                        <p class="humidity">濕度：${data.humidity}%</p>
-                        <p class="wind">風速：${data.wind_speed} m/s</p>
+                        <p class="temperature">${Math.round(data.main.temp)}°C</p>
+                        <p class="feels-like">體感溫度：${Math.round(data.main.feels_like)}°C</p>
+                        <p class="description">${data.weather[0].description}</p>
+                        <p class="humidity">濕度：${data.main.humidity}%</p>
+                        <p class="wind">風速：${data.wind.speed} m/s</p>
                     </div>
                 `;
-                document.getElementById('lastUpdate').textContent = `OpenWeatherMap 數據更新時間：${data.last_update}`;
+                const updateTime = new Date(data.updatedAt).toLocaleString('zh-TW');
+                document.getElementById('lastUpdate').textContent = `數據更新時間：${updateTime}`;
             } catch (error) {
                 document.getElementById('weatherInfo').innerHTML = `
                     <div class="error">發生錯誤：${error.message}</div>
@@ -71,6 +72,9 @@
                 getWeather();
             }
         });
+
+        // 頁面載入時自動顯示天氣
+        window.onload = getWeather;
     </script>
 </body>
 </html> 
