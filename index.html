@@ -10,20 +10,18 @@
     <div class="container">
         <h1>天氣查詢</h1>
         <div class="search-box">
-            <input type="text" id="cityInput" placeholder="Enter city name (e.g., Taipei, Tokyo, London)">
+            <input type="text" id="cityInput" placeholder="Enter city name (e.g., Taipei, Tokyo, London)" value="Taipei">
             <button onclick="getWeather()">查詢</button>
         </div>
         <div id="weatherInfo" class="weather-info">
             <div class="placeholder">
-                Please enter city name in English
+                載入中...
             </div>
         </div>
         <div id="lastUpdate" class="last-update"></div>
     </div>
 
     <script>
-        let currentCity = '';
-
         async function getWeather() {
             const cityInput = document.getElementById('cityInput');
             const city = cityInput.value.trim();
@@ -34,16 +32,16 @@
             }
 
             try {
-                // 從 weather_data.json 讀取數據
                 const response = await fetch('weather_data.json');
+                if (!response.ok) {
+                    throw new Error('無法獲取天氣數據');
+                }
+                
                 const data = await response.json();
 
-                if (data.error) {
-                    document.getElementById('weatherInfo').innerHTML = `
-                        <div class="error">${data.error}</div>
-                    `;
-                    document.getElementById('lastUpdate').textContent = '';
-                    return;
+                // 檢查數據是否有效
+                if (!data || !data.main || !data.weather || data.weather.length === 0) {
+                    throw new Error('無效的天氣數據格式');
                 }
 
                 document.getElementById('weatherInfo').innerHTML = `
@@ -56,13 +54,26 @@
                         <p class="wind">風速：${data.wind.speed} m/s</p>
                     </div>
                 `;
-                const updateTime = new Date(data.updatedAt).toLocaleString('zh-TW');
-                document.getElementById('lastUpdate').textContent = `數據更新時間：${updateTime}`;
+
+                // 格式化更新時間
+                const updateTime = new Date(data.updatedAt);
+                const formattedTime = updateTime.toLocaleString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+                
+                document.getElementById('lastUpdate').textContent = `數據更新時間：${formattedTime}`;
             } catch (error) {
                 document.getElementById('weatherInfo').innerHTML = `
                     <div class="error">發生錯誤：${error.message}</div>
                 `;
                 document.getElementById('lastUpdate').textContent = '';
+                console.error('Error:', error);
             }
         }
 
