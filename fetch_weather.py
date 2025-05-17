@@ -3,6 +3,7 @@ import json
 import requests
 from datetime import datetime
 from dotenv import load_dotenv
+import pytz  # 添加 pytz 模組
 
 # 載入環境變數
 load_dotenv()
@@ -26,6 +27,10 @@ def fetch_weather():
         response.raise_for_status()
         weather_data = response.json()
         
+        # 設定台北時區
+        taipei_tz = pytz.timezone('Asia/Taipei')
+        current_time = datetime.now(taipei_tz)
+        
         # 格式化數據
         formatted_data = {
             'city': weather_data['name'],
@@ -34,7 +39,7 @@ def fetch_weather():
             'description': weather_data['weather'][0]['description'],
             'humidity': weather_data['main']['humidity'],
             'wind_speed': round(weather_data['wind']['speed'], 1),
-            'last_update': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            'last_update': current_time.strftime('%Y-%m-%d %H:%M:%S')
         }
         
         # 保存到文件
