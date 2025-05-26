@@ -1,9 +1,9 @@
 {
   "city": "Taipei",
-  "temperature": 20.5,
-  "feels_like": 20.8,
+  "temperature": 20.7,
+  "feels_like": 21,
   "description": "小雨",
   "humidity": 83,
   "wind_speed": 5.7,
-  "last_update": "2025-05-26 13:20:00"
+  "last_update": "2025-05-26 13:40:11"
 }
